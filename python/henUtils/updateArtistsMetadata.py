@@ -1,5 +1,5 @@
 import time
-from henUtils.queryUtils import *
+from queryUtils import *
 
 # Read the previously saved artist metadata
 saved_artists = read_json_file("../data/artists.json")

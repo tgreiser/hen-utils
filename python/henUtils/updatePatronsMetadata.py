@@ -1,5 +1,5 @@
 import time
-from henUtils.queryUtils import *
+from queryUtils import *
 
 # Read the previously saved patrons metadata
 saved_patrons = read_json_file("../data/patrons.json")

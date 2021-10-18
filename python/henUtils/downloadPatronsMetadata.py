@@ -1,5 +1,5 @@
 import time
-from henUtils.queryUtils import *
+from queryUtils import *
 
 # Set the path to the directory where the transaction information will be saved
 # to avoid to query for it again and again

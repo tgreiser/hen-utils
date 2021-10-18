@@ -299,14 +299,27 @@ def get_all_transactions(type, data_dir, transactions_per_batch=10000, sleep_tim
                     transactions_per_batch, parameter_query=parameter_query)
                 transactions += new_transactions
 
+                from_id = (counter - 1) * transactions_per_batch
+                
+                should_break = False
                 if len(new_transactions) != transactions_per_batch:
+                    should_break = True
+                    file_name = os.path.join(
+                        data_dir, 'tmp', "%s_transactions_%s_%i-%i.json" % (
+                            type, contract, from_id, from_id + (len(new_transactions))))
+                else:
+                    file_name = os.path.join(
+                        data_dir, "%s_transactions_%s_%i-%i.json" % (
+                            type, contract, from_id, from_id + (len(new_transactions))))
+
+                print_info(
+                    "Saving batch %i to %s" % (total_counter, file_name))
+                save_json_file(file_name, new_transactions)
+
+                if should_break:
                     counter = 1
                     total_counter += 1
                     break
-
-                print_info(
-                    "Saving batch %i in the output directory" % total_counter)
-                save_json_file(file_name, new_transactions)
 
                 time.sleep(sleep_time)
 
@@ -367,14 +380,22 @@ def get_bigmap_keys(bigmap_ids, data_dir, keys_per_batch=10000, sleep_time=1):
                 new_bigmap_keys = get_query_result(query)
                 bigmap_keys += new_bigmap_keys
 
+                should_break = False
                 if len(new_bigmap_keys) != keys_per_batch:
+                    should_break = True
+                    from_id = (counter - 1) * keys_per_batch
+                    file_name = os.path.join(
+                        data_dir, "tmp", "bigmap_keys_%s_%i-%i.json" % (
+                            bigmap_id, from_id, from_id + (len(new_bigmap_keys))))
+
+                print_info(
+                    "Saving batch %i to %s" % (total_counter, file_name))
+                save_json_file(file_name, new_bigmap_keys)
+
+                if should_break:
                     counter = 1
                     total_counter += 1
                     break
-
-                print_info(
-                    "Saving batch %i in the output directory" % total_counter)
-                save_json_file(file_name, new_bigmap_keys)
 
                 time.sleep(sleep_time)
 

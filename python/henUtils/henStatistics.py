@@ -1,6 +1,8 @@
 import numpy as np
-from henUtils.queryUtils import *
-from henUtils.plotUtils import *
+import glob
+import os
+from queryUtils import *
+from plotUtils import *
 
 # Exclude the last day from most of the plots?
 exclude_last_day = True
@@ -11,6 +13,13 @@ transactions_dir = "../data/transactions"
 
 # Set the path to the directory where the figures will be saved
 figures_dir = "../figures"
+
+# Delete tmp files
+tmp_files = glob.glob('../data/transactions/tmp/*.json')
+for f in tmp_files:
+    if os.path.exists(f):
+        os.remove(f)
+print("Removed tmp files")
 
 # Read the connected wallets information (wallets connected to the same user)
 connected_wallets = read_json_file("../data/connected_wallets.json")
@@ -34,12 +43,6 @@ english_auction_transactions = get_all_transactions(
 dutch_auction_transactions = get_all_transactions(
     "dutch_auction", transactions_dir, sleep_time=1)
 
-# Get the H=N bigmaps
-swaps_bigmap = get_hen_bigmap("swaps", transactions_dir, sleep_time=1)
-registries_bigmap = get_hen_bigmap("registries", transactions_dir, sleep_time=1)
-subjkts_metadata_bigmap = get_hen_bigmap(
-    "subjkts metadata", transactions_dir, sleep_time=1)
-
 # Get the objkt.com bigmaps
 bids_bigmap = get_objktcom_bigmap(
     "bids", "OBJKT", transactions_dir, sleep_time=1)
@@ -49,6 +52,14 @@ english_auctions_bigmap = get_objktcom_bigmap(
     "english auctions", "OBJKT", transactions_dir, sleep_time=1)
 dutch_auctions_bigmap = get_objktcom_bigmap(
     "dutch auctions", "OBJKT", transactions_dir, sleep_time=1)
+
+exit()
+
+# Get the H=N bigmaps
+swaps_bigmap = get_hen_bigmap("swaps", transactions_dir, sleep_time=1)
+registries_bigmap = get_hen_bigmap("registries", transactions_dir, sleep_time=1)
+subjkts_metadata_bigmap = get_hen_bigmap(
+    "subjkts metadata", transactions_dir, sleep_time=1)
 
 # Select only the bids and asks transactions related with H=N OBJKTs
 bid_transactions = [transaction for transaction in bid_transactions if 
@@ -121,6 +132,8 @@ plot_operations_per_day(
     "Days since first minted OBJKT (1st of March)",
     "Dutch auction operations per day", exclude_last_day=exclude_last_day)
 save_figure(os.path.join(figures_dir, "dutch_auction_operations_per_day.png"))
+
+exit(0)
 
 # Extract the artists, collector and patron accounts
 artists = extract_artist_accounts(mint_transactions, registries_bigmap)

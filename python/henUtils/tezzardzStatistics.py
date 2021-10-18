@@ -1,6 +1,6 @@
 import numpy as np
-from henUtils.queryUtils import *
-from henUtils.plotUtils import *
+from queryUtils import *
+from plotUtils import *
 
 # Exclude the last day from most of the plots?
 exclude_last_day = False

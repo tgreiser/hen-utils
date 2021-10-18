@@ -3,7 +3,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 from calendar import monthrange
 
-from henUtils.queryUtils import split_timestamps, get_counts_per_day
+from queryUtils import split_timestamps, get_counts_per_day
 
 
 def plot_histogram(data, title, x_label, y_label, bins=100, log=False, **kwargs):
